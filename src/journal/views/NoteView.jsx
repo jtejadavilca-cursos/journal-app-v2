@@ -5,16 +5,28 @@ import { ImageGallery } from "../components";
 import { useForm } from "../../hooks/useForm";
 import { useDispatch, useSelector } from "react-redux";
 import { startSaveNote, setActiveNote } from "../../store/journal";
+import Swal from "sweetalert2";
 
 export const NoteView = () => {
     const dispatch = useDispatch();
-    const { active: note } = useSelector((state) => state.journal);
+    const { active: note, savedMessage, isSaving } = useSelector((state) => state.journal);
 
     const { title, body, date, formState, onInputChange } = useForm(note);
 
     useEffect(() => {
         dispatch(setActiveNote(formState));
     }, [formState]);
+
+    useEffect(() => {
+        if (savedMessage && savedMessage.length > 0) {
+            Swal.fire({
+                title: "Guardado",
+                text: savedMessage,
+                icon: "success",
+                confirmButtonText: "Ok",
+            });
+        }
+    }, [savedMessage]);
 
     const dateString = useMemo(() => {
         const dateObj = new Date(date);
@@ -43,7 +55,7 @@ export const NoteView = () => {
                     color="primary"
                     sx={{ padding: 2 }}
                     onClick={onSave}
-                    disabled={title.trim() === "" && body.trim() === ""}
+                    disabled={isSaving || (title.trim() === "" && body.trim() === "")}
                 >
                     <SaveOutlined sx={{ fontSize: 30, mr: 1 }} />
                     Guardar

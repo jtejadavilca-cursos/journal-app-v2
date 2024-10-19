@@ -5,6 +5,7 @@ import { JournalLayout } from "../layout/JournalLayout";
 import { NoteView, NothingSelectedView } from "../views";
 import { useDispatch, useSelector } from "react-redux";
 import { startNewNote } from "../../store/journal/thunks";
+import { Loader } from "../components/Loader";
 
 export const JournalPage = () => {
     const dispatch = useDispatch();
@@ -36,6 +37,7 @@ export const JournalPage = () => {
             >
                 <AddOutlined sx={{ fontSize: 30 }} />
             </IconButton>
+            <Loader />
         </JournalLayout>
     );
 };
