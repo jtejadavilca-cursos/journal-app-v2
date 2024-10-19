@@ -2,6 +2,7 @@ import { FirebaseDB } from "../../firebase/config";
 import { collection, doc, setDoc } from "firebase/firestore/lite";
 import { loadNotes } from "../../helpers/loadNotes";
 import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setSaving, updateNote } from "./journalSlice";
+import { fileUpload } from "../../helpers/fileUpload";
 
 export const startNewNote = () => {
     return async (dispatch, getState) => {
@@ -59,5 +60,18 @@ export const startSaveNote = () => {
         } catch (error) {
             console.log("error", error);
         }
+    };
+};
+
+export const startUploading = (files = []) => {
+    return async (dispatch, getState) => {
+        setSaving(true);
+
+        const { active: note } = getState().journal;
+
+        const imageUrl = await fileUpload(files[0]);
+
+        note.imageUrl.push(imageUrl);
+        dispatch(updateNote(note));
     };
 };

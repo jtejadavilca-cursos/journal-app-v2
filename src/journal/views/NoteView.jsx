@@ -1,10 +1,10 @@
-import { SaveOutlined } from "@mui/icons-material";
-import { Button, Grid, TextField, Typography } from "@mui/material";
-import React, { useEffect, useMemo } from "react";
+import { SaveOutlined, UploadOutlined } from "@mui/icons-material";
+import { Button, Grid, IconButton, TextField, Typography } from "@mui/material";
+import React, { useEffect, useMemo, useRef } from "react";
 import { ImageGallery } from "../components";
 import { useForm } from "../../hooks/useForm";
 import { useDispatch, useSelector } from "react-redux";
-import { startSaveNote, setActiveNote } from "../../store/journal";
+import { startSaveNote, setActiveNote, startUploading } from "../../store/journal";
 import Swal from "sweetalert2";
 
 export const NoteView = () => {
@@ -12,6 +12,18 @@ export const NoteView = () => {
     const { active: note, savedMessage, isSaving } = useSelector((state) => state.journal);
 
     const { title, body, date, formState, onInputChange } = useForm(note);
+
+    const dateString = useMemo(() => {
+        const dateObj = new Date(date);
+        return dateObj.toLocaleDateString("es-ES", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        });
+    }, [date]);
+
+    const fileInputRef = useRef();
 
     useEffect(() => {
         dispatch(setActiveNote(formState));
@@ -28,18 +40,20 @@ export const NoteView = () => {
         }
     }, [savedMessage]);
 
-    const dateString = useMemo(() => {
-        const dateObj = new Date(date);
-        return dateObj.toLocaleDateString("es-ES", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-        });
-    }, [date]);
-
     const onSave = () => {
         dispatch(startSaveNote());
+    };
+
+    const onFileInputChange = ({ target }) => {
+        const files = target.files;
+        if (files.length === 0) return;
+
+        dispatch(startUploading(files));
+    };
+
+    const openInputFile = (e) => {
+        e.preventDefault();
+        fileInputRef.current.click();
     };
 
     return (
@@ -51,6 +65,26 @@ export const NoteView = () => {
             </Grid>
 
             <Grid item>
+                <input
+                    type="file"
+                    name="file"
+                    id="file"
+                    multiple
+                    onChange={onFileInputChange}
+                    style={{ display: "none" }}
+                    ref={fileInputRef}
+                />
+                <IconButton
+                    component="label"
+                    htmlFor="file"
+                    sx={{ padding: 2 }}
+                    color="primary"
+                    disabled={isSaving}
+                    onClick={openInputFile}
+                >
+                    <UploadOutlined sx={{ fontSize: 30 }} />
+                </IconButton>
+
                 <Button
                     color="primary"
                     sx={{ padding: 2 }}
