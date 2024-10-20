@@ -48,7 +48,7 @@ export const NoteView = () => {
         const files = target.files;
         if (files.length === 0) return;
 
-        dispatch(startUploading(files));
+        dispatch(startUploading(Array.from(files)));
     };
 
     const openInputFile = (e) => {
