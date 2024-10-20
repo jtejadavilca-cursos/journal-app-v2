@@ -9,7 +9,6 @@ import { checkingCrendentials, login, logout, wrongCredentials } from "./authSli
 
 export const checkingAuthentication = (email, password) => {
     return async (dispatch) => {
-        console.log("checkingAuthentication thunk", email, password);
         dispatch(checkingCrendentials());
 
         const result = await signInWithEmailPassword(email, password);
@@ -24,7 +23,6 @@ export const checkingAuthentication = (email, password) => {
 
 export const startGoogleAuthentication = () => {
     return async (dispatch) => {
-        console.log("startGoogleSignIn thunk");
         dispatch(checkingCrendentials());
 
         const result = await signInWithGoogle();
@@ -56,7 +54,6 @@ export const startLoginWithEmailPassword = (email, password) => {
     return async (dispatch) => {
         console.log("checkingAuthentication thunk", email, password);
         dispatch(checkingCrendentials());
-        //const { token } = await apiLogin(email, password);
 
         const result = await signInWithEmailPassword(email, password);
 
@@ -77,11 +74,8 @@ export const startLogout = () => {
 };
 
 const handlingWrongCredentials = (dispatch, errorMessage) => {
-    console.log("handlingWrongCredentials", errorMessage);
     dispatch(logout({ errorMessage }));
-    console.log("after logout");
     dispatch(wrongCredentials(errorMessage));
-    console.log("after wrongCredentials");
 
     setTimeout(() => {
         dispatch(wrongCredentials(null));

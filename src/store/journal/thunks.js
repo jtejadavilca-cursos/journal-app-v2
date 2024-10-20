@@ -74,7 +74,7 @@ export const startSaveNote = () => {
 };
 
 export const startUploading = (files = []) => {
-    return async (dispatch, getState) => {
+    return async (dispatch, _) => {
         dispatch(setSaving(true));
 
         const fileUploadPromises = files.map((file) => fileUpload(file));
@@ -89,8 +89,10 @@ export const startDeletingNote = () => {
         dispatch(setSaving(true));
         const { uid } = getState().auth;
         const { active: note } = getState().journal;
-        //await FirebaseDB.collection(`${uid}/journal/notes`).doc(note.id).delete();
-        await deleteDoc(doc(FirebaseDB, `${uid}/journal/notes/${note.id}`));
+
+        const docRef = doc(FirebaseDB, `${uid}/journal/notes/${note.id}`);
+        await deleteDoc(docRef);
+
         dispatch(deleteNoteById());
     };
 };
