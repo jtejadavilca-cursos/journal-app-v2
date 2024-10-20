@@ -1,10 +1,10 @@
-import { SaveOutlined, UploadOutlined } from "@mui/icons-material";
+import { SaveOutlined, UploadOutlined, DeleteOutlined } from "@mui/icons-material";
 import { Button, Grid, IconButton, TextField, Typography } from "@mui/material";
 import React, { useEffect, useMemo, useRef } from "react";
 import { ImageGallery } from "../components";
 import { useForm } from "../../hooks/useForm";
 import { useDispatch, useSelector } from "react-redux";
-import { startSaveNote, setActiveNote, startUploading } from "../../store/journal";
+import { startSaveNote, setActiveNote, startUploading, startDeletingNote } from "../../store/journal";
 import Swal from "sweetalert2";
 
 export const NoteView = () => {
@@ -42,6 +42,23 @@ export const NoteView = () => {
 
     const onSave = () => {
         dispatch(startSaveNote());
+    };
+
+    const onDelete = (e) => {
+        e.preventDefault();
+
+        Swal.fire({
+            title: "Eliminar",
+            text: "Estás seguro de eliminar esta nota?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí",
+            cancelButtonText: "No",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(startDeletingNote());
+            }
+        });
     };
 
     const onFileInputChange = ({ target }) => {
@@ -84,6 +101,9 @@ export const NoteView = () => {
                 >
                     <UploadOutlined sx={{ fontSize: 30 }} />
                 </IconButton>
+                <Button color="error" sx={{ padding: 2 }} onClick={onDelete} disabled={isSaving || note == null}>
+                    <DeleteOutlined sx={{ fontSize: 30, mr: 1 }} />
+                </Button>
 
                 <Button
                     color="primary"
