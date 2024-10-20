@@ -45,6 +45,7 @@ export const journalSlice = createSlice({
             console.log("state.active", state.active);
             console.log("state.active.imageUrls", state.active.imageUrls);
             state.active.imageUrls = [...state.active.imageUrls, ...action.payload];
+            state.isSaving = false;
         },
         deleteNoteById: (state, action) => {
             state.notes = state.notes.filter((note) => note.id !== action.payload);

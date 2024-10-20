@@ -81,6 +81,5 @@ export const startUploading = (files = []) => {
 
         const photosUrls = await Promise.all(fileUploadPromises);
         dispatch(setPhotosToActiveNote(photosUrls));
-        dispatch(setSaving(false));
     };
 };
