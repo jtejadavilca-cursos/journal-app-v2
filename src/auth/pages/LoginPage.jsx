@@ -63,7 +63,7 @@ export const LoginPage = () => {
     };
 
     return (
-        <AuthLayout title={`Login - ${status || (errorMessage ?? "")}`}>
+        <AuthLayout title="Login" maxWidth={468}>
             <form onSubmit={onLogin} className="animate__animated animate__fadeIn">
                 <Grid container>
                     <Grid item="true" size={12} sx={{ mb: 2 }}>
@@ -124,7 +124,7 @@ export const LoginPage = () => {
 
                 <Grid container direction="row" justifyContent="end">
                     <Grid item="true" size={6} sx={{ mt: 1 }}>
-                        <Typography variant="body2">
+                        <Typography variant="body2" textAlign="right">
                             Don't have an account?{" "}
                             <Link component={RouterLink} color="inherit" to="/auth/register">
                                 Register

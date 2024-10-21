@@ -60,9 +60,7 @@ export const RegisterPage = () => {
     };
 
     return (
-        <AuthLayout title="Register">
-            <h1>FormValid - {isFormValid ? "Válido" : "Inválido"}</h1>
-
+        <AuthLayout title="Register" maxWidth={800}>
             <form onSubmit={onRegister} className="animate__animated animate__fadeIn">
                 <Grid container>
                     <Grid item="true" size={12} sx={{ mb: 2 }}>
@@ -141,7 +139,7 @@ export const RegisterPage = () => {
 
                 <Grid container direction="row" justifyContent="end">
                     <Grid item="true" size={6} sx={{ mt: 1 }}>
-                        <Typography variant="body2">
+                        <Typography variant="body2" textAlign="right">
                             Don't have an account?{" "}
                             <Link component={RouterLink} color="inherit" to="/auth/login">
                                 Login
