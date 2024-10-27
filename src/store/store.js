@@ -7,4 +7,9 @@ export const store = configureStore({
         auth: authSlice.reducer,
         journal: journalSlice.reducer,
     },
+    /* Para cuando sea necesario desactivar la comprobación de serialización de Redux Toolkit
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        serializableCheck: false,
+    }),
+    */
 });
