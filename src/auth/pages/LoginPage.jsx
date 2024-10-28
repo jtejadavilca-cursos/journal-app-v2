@@ -40,26 +40,18 @@ export const LoginPage = () => {
         }
     }, [isAuthenticated]);
 
-    const login = useCallback(() => {
-        dispatch(startLoginWithEmailPassword(email, password));
-    }, [email, password, dispatch]);
-
-    const loginGoogle = useCallback(() => {
-        dispatch(startGoogleAuthentication());
-    }, [dispatch]);
-
     const onLogin = (e) => {
         e.preventDefault();
         setFormSubmitted(true);
         if (!isFormValid) return;
-        login();
+        dispatch(startLoginWithEmailPassword(email, password));
     };
 
     const onGoogleLogin = (e) => {
         e.preventDefault();
         setFormSubmitted(true);
         console.log("onGoogleLogin");
-        loginGoogle();
+        dispatch(startGoogleAuthentication());
     };
 
     return (
